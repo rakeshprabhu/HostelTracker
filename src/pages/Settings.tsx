@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, getOrCreateSettings } from '@/db'
+import { db } from '@/db'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,15 +19,19 @@ import {
 import { Download, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 import { useRef, useState, useEffect } from 'react'
+import { getOrCreateSettings } from '@/db'
 import { exportAllData, importAllData } from '@/lib/backup'
 import { format, parseISO } from 'date-fns'
 
 export default function Settings() {
-  const settings = useLiveQuery(() => getOrCreateSettings(), [])
+  const settings = useLiveQuery(() => db.settings.get('default'), [])
   const [hostelName, setHostelName] = useState('')
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
+
+  // Ensure the settings record exists on first visit
+  useEffect(() => { getOrCreateSettings() }, [])
 
   useEffect(() => {
     if (settings) {

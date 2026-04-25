@@ -38,7 +38,7 @@ export default function EBReadings() {
       </div>
 
       {/* Month selector */}
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex gap-2 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {months.map((m) => (
           <button
             key={m}
